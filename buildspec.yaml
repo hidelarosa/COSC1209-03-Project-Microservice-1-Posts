@@ -12,8 +12,8 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker docker build -t microservice-posts .
-      - docker tag microservice-posts:latest 761018853069.dkr.ecr.us-east-1.amazonaws.com/microservice-posts:$IMAGE_TAG
+      - docker build -t microservice-posts .
+      - docker tag microservice-posts:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:

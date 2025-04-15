@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "koa": "^1.2.5",
+    "koa": "^2.14.2",
     "koa-router": "^5.4.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "server.js"
   }
 }

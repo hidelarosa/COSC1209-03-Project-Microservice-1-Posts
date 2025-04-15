@@ -1,36 +1,40 @@
-const app = require('koa')();
-const router = require('koa-router')();
+const Koa = require('koa');
+const Router = require('koa-router');
 const db = require('./db.json');
 
+const app = new Koa();
+const router = new Router();
+
+
 // Log requests
-app.use(function *(next){
-  const start = new Date;
-  yield next;
-  const ms = new Date - start;
-  console.log('%s %s - %s', this.method, this.url, ms);
+app.use(async (ctx, next) => {
+  const start = new Date();
+  await next();
+  const ms = new Date() - start;
+  console.log('%s %s - %s', ctx.method, ctx.url, ms);
 });
 
-router.get('/api/posts/in-thread/:threadId', function *() {
-  const id = parseInt(this.params.threadId);
-  this.body = db.posts.filter((post) => post.thread == id);
+router.get('/api/posts/in-thread/:threadId', async (ctx) => {
+  const id = parseInt(ctx.params.threadId);
+  ctx.body = db.posts.filter((post) => post.thread === id);
 });
 
-router.get('/api/posts/by-user/:userId', function *() {
-  const id = parseInt(this.params.userId);
-  this.body = db.posts.filter((post) => post.user == id);
+router.get('/api/posts/by-user/:userId', async (ctx) => {
+  const id = parseInt(ctx.params.userId);
+  ctx.body = db.posts.filter((post) => post.user === id);
 });
 
-router.get('/api/', function *() {
-  this.body = "API ready to receive requests";
+router.get('/api/', async (ctx) => {
+  ctx.body = "API ready to receive requests";
 });
 
-router.get('/', function *() {
-  this.body = "Ready to receive requests";
+router.get('/', async (ctx) => {
+  ctx.body = "Ready to receive requests";
 });
 
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(3000);
+app.listen(3001);
 
 console.log('Worker started');
